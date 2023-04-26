@@ -7,6 +7,10 @@ result = DatabaseConnection.exec_params('SELECT * FROM artists;', [])
 
 artists = ArtistRepository.new
 
-artists.all.each do |artists|
-  p artists
-end
+#artists.all.each do |artists|
+#  p artists
+#end
+
+
+time = artists.find(4)
+puts time.name
