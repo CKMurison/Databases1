@@ -1,10 +1,14 @@
 require_relative 'lib/recipe_repository'
 require_relative 'lib/database_connection'
 
-DatabaseConnection.connect('recipes_database')
+DatabaseConnection.connect('recipes_database_test')
 
-recipe_repository = RecipeRepository.new
+repo = RecipeRepository.new
 
-recipe = recipe_repository.all.each do |recipe|
-  puts recipe.title
+repo.all.each do |recipe|
+  puts recipe
 end
+
+#artists.all.each do |artists|
+#  p artists
+#end

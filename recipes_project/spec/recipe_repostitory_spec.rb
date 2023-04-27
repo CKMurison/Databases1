@@ -18,24 +18,24 @@ RSpec.describe RecipeRepository do
     repo = RecipeRepository.new
     recipe = repo.all
     p recipe
-    expect(recipe.length).to eq '2'
-    expect(recipes[0].id).to eq '1'
-    expect(recipes[0].name).to eq('Spam')
-    expect(recipes[0].cooking_time).to eq('5')
-    expect(recipes[0].rating).to eq('5')
-    expect(recipes[1].id).to eq '2'
-    expect(recipes[1].name).to eq('Pancakes')
-    expect(recipes[1].cooking_time).to eq('20')
-    expect(recipes[1].rating).to eq('5')
+    expect(recipe.length).to eq(2)
+    expect(recipe[0].id).to eq '1'
+    expect(recipe[0].name).to eq('Spam')
+    expect(recipe[0].cooking_time).to eq('5')
+    expect(recipe[0].rating).to eq('5')
+    expect(recipe[1].id).to eq '2'
+    expect(recipe[1].name).to eq('Pancakes')
+    expect(recipe[1].cooking_time).to eq('20')
+    expect(recipe[1].rating).to eq('5')
   end
 
   it 'returns Spam' do
     repo = RecipeRepository.new
     recipe = repo.find(1)
-    expect(recipes[0].id).to eq '1'
-    expect(recipes[0].name).to eq('Spam')
-    expect(recipes[0].cooking_time).to eq('5')
-    expect(recipes[0].rating).to eq('5')
+    expect(recipe.id).to eq '1'
+    expect(recipe.name).to eq('Spam')
+    expect(recipe.cooking_time).to eq('5')
+    expect(recipe.rating).to eq('5')
    
   end
 
