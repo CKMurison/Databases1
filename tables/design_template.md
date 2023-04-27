@@ -7,28 +7,28 @@ Copy this recipe template to design and create a database table from a specifica
 # EXAMPLE USER STORY:
 # (analyse only the relevant part - here the final line).
 
-As a person who loves movies,
-So I can list all my favourite movies
-I want to see a list of movies' titles.
+As a food lover,
+So I can stay organised and decide what to cook,
+I'd like to keep a list of all my recipes with their names.
 
-As a person who loves movies,
-So I can list all my favourite movies
-I want to see a list of movies' genres.
+As a food lover,
+So I can stay organised and decide what to cook,
+I'd like to keep the average cooking time (in minutes) for each recipe.
 
-As a person who loves movies,
-So I can list all my favourite movies
-I want to see a list of movies' release year.
+As a food lover,
+So I can stay organised and decide what to cook,
+I'd like to give a rating to each of the recipes (from 1 to 5).
 
-Nouns: movies, titles, genres, release_year
+Nouns: recipes, names, cooking_time, rating
 
 
 2. Infer the Table Name and Columns
 
 Put the different nouns in this table. Replace the example with your own nouns.
 
-Name of the table (always plural): students
+Name of the table (always plural): recipes
 
-Column names: titles, genres, release_year
+Column names: name, cooking_time, rating
 
 3. Decide the column types.
 
@@ -41,22 +41,22 @@ Remember to always have the primary key id as a first column. Its type will alwa
 # EXAMPLE:
 
 id: SERIAL
-title: text
-genre: text
-release_year int
+name: text
+cooking_time: int
+rating: int
 4. Write the SQL.
 
 -- EXAMPLE
--- file: movies_table.sql
+-- file: recipes_table.sql
 
 -- Replace the table name, columm names and types.
 
-CREATE TABLE movies (
+CREATE TABLE recipes (
   id SERIAL PRIMARY KEY,
-  titles text,
-  genre text,
-  release_year int
+  name text,
+  cooking_time int,
+  rating int
 );
 5. Create the table.
 
-psql -h 127.0.0.1 movies_database < movies_table.sql
+psql -h 127.0.0.1 recipes_database < recipes_database.sql
