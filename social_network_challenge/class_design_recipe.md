@@ -254,25 +254,8 @@ id_to_delete = 1
 repo.delete(id_to_delete)
 
 all_users = repo.all
-all_users.length => 3
+all_users.length => 1
 all_users.first.id => 2
-
-# 5 Update an artist
-
-repo = ArtistRepository.new
-
-artist = repo.find(1)
-
-artist.name = 'something'
-artist.genre = 'Disco'
-
-repo.update(artist)
-
-updated_artist = repo.find(1)
-
-updated_artist.name => 'something
-updated_artist.genre => 'Disco'
-
 
 
 # 1
@@ -280,69 +263,59 @@ updated_artist.genre => 'Disco'
 
 repo = PostsRepository.new
 
-user = repo.all
-user.length => 2
-user.first.id => 1
-user.first.email_address => 'cameron@gmail'
+post = repo.all
+post.length => 4
+post.first.id => 1
+post.first.user_account => 'EpicCam'
 
 # 2 
-# Find a certian user
+# Find a certian post
 
-    repo = UsersRepository.new
-    user = repo.find(1)
-    expect(user.email_address).to eq 'cameron@gmail'
-    expect(user.user_name).to eq 'EpicCam'
+    repo = PostsRepository.new
+    post = repo.find(1)
+    expect(user.user_account).to eq 'EpicCam'
+    expect(user.title).to eq 'Best bean brands'
+    expect(user.content).to eq 'Baked beans'
+    expect(user.views).to eq '1'
 
-    repo = UsersRepository.new
-    user = repo.find(2)
-    expect(user.email_address).to eq 'mergim@yahoo'
-    expect(user.user_name).to eq 'Mergz'
+    repo = PostsRepository.new
+    post = repo.find(4)
+    expect(user.user_account).to eq 'Mergz'
+    expect(user.title).to eq 'The best omelet recipes'
+    expect(user.content).to eq 'Cheese ftw'
+    expect(user.views).to eq '1000'
 
-# 3 Create new artists
+# 3 Create new Posts
 
-    repo = UsersRepository.new
+    repo = PostsRepository.new
 
-    new_user = Users.new
-    new_user.email_address = 'Jim@bing'
-    new_user.user_name = 'Big Jim'
+    new_post = Posts.new
+    new_post.user_account = 'cm'
+    new_post.title = 'Big cm'
+    new_post.content = 'mc'
+    new_post.views = '12345'
 
-    repo.create(new_user)
+    repo.create(new_post)
 
-    users = repo.all
-    last_user = users.last
+    posts = repo.all
+    last_post = posts.last
 
-    expect(last_users.email_address).to eq('Jim@bing')
-    expect(last_users.user_name).to eq('Big Jim')
+    expect(last_post.user_account).to eq('cm')
+    expect(last_post.title).to eq('Big cm')
+    expect(last_post.content).to eq('mc')
+    expect(last_post.views).to eq('Big 12345')
 
+# 4 Delete an Posts
 
-# 4 Delete an artist
-
-repo = UsersRepository.new
+repo = PostsRepository.new
 
 id_to_delete = 1
 
 repo.delete(id_to_delete)
 
-all_users = repo.all
-all_users.length => 3
-all_users.first.id => 2
-
-# 5 Update an artist
-
-repo = ArtistRepository.new
-
-artist = repo.find(1)
-
-artist.name = 'something'
-artist.genre = 'Disco'
-
-repo.update(artist)
-
-updated_artist = repo.find(1)
-
-updated_artist.name => 'something
-updated_artist.genre => 'Disco'
-
+all_posts = repo.all
+all_posts.length => 3
+all_posts.first.id => 2
 
 
 
@@ -355,17 +328,30 @@ This is so you get a fresh table contents every time you run the test suite.
 
 # EXAMPLE
 
-# file: spec/student_repository_spec.rb
+# file: spec/users_repository_spec.rb
 
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_users_table
+  seed_sql = File.read('spec/user_seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'SN_database' })
   connection.exec(seed_sql)
 end
 
-describe StudentRepository do
+describe UsersRepository do
   before(:each) do 
-    reset_students_table
+    reset_users_table
+  end
+
+  # file: spec/posts_repository_spec.rb
+
+def reset_posts_table
+  seed_sql = File.read('spec/posts_seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'SN_database' })
+  connection.exec(seed_sql)
+end
+
+describe PostsRepository do
+  before(:each) do 
+    reset_posts_table
   end
 
   # (your tests will go here).
