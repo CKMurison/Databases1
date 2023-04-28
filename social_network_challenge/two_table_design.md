@@ -7,42 +7,48 @@ Copy this recipe template to design and create two related database tables from 
 # EXAMPLE USER STORY:
 # (analyse only the relevant part - here the final line).
 
-As a blogger
-So I can write interesting stuff
-I want to write posts having a title.
+As a social network user,
+So I can have my information registered,
+I'd like to have a user account with my email address.
 
-As a blogger
-So I can write interesting stuff
-I want to write posts having a content.
+As a social network user,
+So I can have my information registered,
+I'd like to have a user account with my username.
 
-As a blogger
-So I can let people comment on interesting stuff
-I want to allow comments on my posts.
+As a social network user,
+So I can write on my timeline,
+I'd like to create posts associated with my user account.
 
-As a blogger
-So I can let people comment on interesting stuff
-I want the comments to have a content.
+As a social network user,
+So I can write on my timeline,
+I'd like each of my posts to have a title and a content.
 
-As a blogger
-So I can let people comment on interesting stuff
-I want the author to include their name in comments.
+As a social network user,
+So I can know who reads my posts,
+I'd like each of my posts to have a number of views.
+
 Nouns:  
 
 student_name, cohort_name, starting_date, student_cohorts
 2. Infer the Table Name and Columns
+
+| table_name            | Properties          |
+| --------------------- | ------------------  |
+| users                 | email_address, user_name
+| posts                 | user_account, title, content, views
 
 Put the different nouns in this table. Replace the example with your own nouns.
 
 Record	Properties
 posts,	title, content
 comments,  content, names
-Name of the first table (always plural): posts
+Name of the first table (always plural): users
 
-Column posts: title, content
+Column users: email_address, user_name
 
-Name of the second table (always plural): comments
+Name of the second table (always plural): posts
 
-Column comments: content, names
+Column posts: user_account, title, content, views
 
 3. Decide the column types.
 
@@ -54,53 +60,56 @@ Remember to always have the primary key id as a first column. Its type will alwa
 
 # EXAMPLE:
 
+Table: users
+id: SERIAL
+email_address: text
+user_name: text
+
 Table: posts
 id: SERIAL
+user_account: text
 title: text
 content: text
+views: int
 
-Table: comments
-id: SERIAL
-content: text
-names: text
 4. Decide on The Tables Relationship
 
 Most of the time, you'll be using a one-to-many relationship, and will need a foreign key on one of the two tables.
 
 To decide on which one, answer these two questions:
 
-Can a post have many comments? YES
-Can a comment have many posts? NO
+Can a user have many posts? YES
+Can a post have many users? NO
 
-posts -> one-to-many -> comments
+users -> one-to-many -> posts
 
-The foregin key is on posts(comments_id)
+The foregin key is on posts(user_id)
 
 
 4. Write the SQL.
 
 -- EXAMPLE
--- file: posts_table.sql
+-- file: social_network_table.sql
 
 -- Replace the table name, columm names and types.
 
 -- Create the table without the foreign key first.
-CREATE TABLE comments (
+CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  content text,
-  name text
+  email_address text,
+  user_name text
 );
 
 -- Then the table with the foreign key first.
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
+  user_account text,
   title text,
   content text,
+  views int,
 -- The foreign key name is always {other_table_singular}_id
-  comment_id int,
-  constraint fk_comments foreign key(comment_id)
-    references comment(id)
-    on delete cascade
+  constraint fk_user foreign key(user_id)
+    references users(id)
 );
 5. Create the tables.
 
