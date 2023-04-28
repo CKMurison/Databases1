@@ -7,22 +7,26 @@ Copy this recipe template to design and create two related database tables from 
 # EXAMPLE USER STORY:
 # (analyse only the relevant part - here the final line).
 
-As a coach
-So I can get to know all students
-I want to see a list of students' names.
+As a blogger
+So I can write interesting stuff
+I want to write posts having a title.
 
-As a coach
-So I can get to know all students
-I want to see a list of cohorts' names.
+As a blogger
+So I can write interesting stuff
+I want to write posts having a content.
 
-As a coach
-So I can get to know all students
-I want to see a list of cohorts' starting dates.
+As a blogger
+So I can let people comment on interesting stuff
+I want to allow comments on my posts.
 
-As a coach
-So I can get to know all students
-I want to see a list of students' cohorts.
-Nouns:
+As a blogger
+So I can let people comment on interesting stuff
+I want the comments to have a content.
+
+As a blogger
+So I can let people comment on interesting stuff
+I want the author to include their name in comments.
+Nouns:  
 
 student_name, cohort_name, starting_date, student_cohorts
 2. Infer the Table Name and Columns
@@ -30,15 +34,15 @@ student_name, cohort_name, starting_date, student_cohorts
 Put the different nouns in this table. Replace the example with your own nouns.
 
 Record	Properties
-students	name
-cohorts	name starting_date
-Name of the first table (always plural): students
+posts,	title, content
+comments,  content, names
+Name of the first table (always plural): posts
 
-Column names: name
+Column posts: title, content
 
-Name of the second table (always plural): cohorts
+Name of the second table (always plural): comments
 
-Column names: name, starting_date
+Column comments: content, names
 
 3. Decide the column types.
 
@@ -50,50 +54,52 @@ Remember to always have the primary key id as a first column. Its type will alwa
 
 # EXAMPLE:
 
-Table: students
+Table: posts
 id: SERIAL
-name: text
+title: text
+content: text
 
-Table: cohorts
+Table: comments
 id: SERIAL
-name: text
-starting_date: date
+content: text
+names: text
 4. Decide on The Tables Relationship
 
 Most of the time, you'll be using a one-to-many relationship, and will need a foreign key on one of the two tables.
 
 To decide on which one, answer these two questions:
 
-Can a student have many cohrts? NO
-Can a cohort have many students? YES
+Can a post have many comments? YES
+Can a comment have many posts? NO
 
-student -> many-to-one -> Cohort
+posts -> one-to-many -> comments
 
-The foregin key is on students(cohort_id)
+The foregin key is on posts(comments_id)
 
 
 4. Write the SQL.
 
 -- EXAMPLE
--- file: albums_table.sql
+-- file: posts_table.sql
 
 -- Replace the table name, columm names and types.
 
 -- Create the table without the foreign key first.
-CREATE TABLE cohorts (
+CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
-  name text,
-  start_date date
+  content text,
+  name text
 );
 
 -- Then the table with the foreign key first.
-CREATE TABLE students (
+CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
-  name text,
+  title text,
+  content text,
 -- The foreign key name is always {other_table_singular}_id
-  cohort_id int,
-  constraint fk_cohorts foreign key(cohorts_id)
-    references cohrots(id)
+  comment_id int,
+  constraint fk_comments foreign key(comment_id)
+    references comment(id)
     on delete cascade
 );
 5. Create the tables.
