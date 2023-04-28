@@ -93,24 +93,25 @@ The foregin key is on posts(user_id)
 
 -- Replace the table name, columm names and types.
 
--- Create the table without the foreign key first.
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  email_address text,
-  user_name text
-);
-
--- Then the table with the foreign key first.
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   user_account text,
   title text,
   content text,
-  views int,
--- The foreign key name is always {other_table_singular}_id
-  constraint fk_user foreign key(user_id)
-    references users(id)
+  views int
 );
+
+
+-- Then the table with the foreign key first.
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email_address text,
+  user_name text,
+-- The foreign key name is always {other_table_singular}_id
+  post_id int,
+	constraint fk_post foreign key (post_id) references posts(id)
+);
+
 5. Create the tables.
 
 psql -h 127.0.0.1 student_directory < students_table.sql

@@ -23,7 +23,7 @@ Your tests will depend on data stored in PostgreSQL to run.
 If seed data is provided (or you already created it), you can skip this step.
 
 -- EXAMPLE
--- (file: spec/seeds_{table_name}.sql)
+-- (file: spec/seeds_SN_database.sql)
 
 -- Write your SQL seed here. 
 
@@ -45,42 +45,37 @@ psql -h 127.0.0.1 your_database_name < seeds_{table_name}.sql
 
 Usually, the Model class name will be the capitalised table name (single instead of plural). The same name is then suffixed by Repository for the Repository class name.
 
-# EXAMPLE
-# Table name: artists
+
+# Table name: users
+
+# Table name: posts
+
 
 # Model class
-# (in lib/artists.rb)
-class Artists
+# (in lib/users.rb)
+class Users
+  attr_reader: _____
 end
+
+
+# Model class
+# (in lib/posts.rb)
+class Posts
+  attr_reader: _____
+end
+
 
 # Repository class
-# (in lib/artists_repository.rb)
-class ArtistsRepository
-end
-4. Implement the Model class
+# (in lib/users_repository.rb)
+class UsersRepository
 
-Define the attributes of your Model class. You can usually map the table columns to the attributes of the class, including primary and foreign keys.
-
-# EXAMPLE
-# Table name: students
-
-# Model class
-# (in lib/student.rb)
-
-class Student
-
-  # Replace the attributes by your own columns.
-  attr_accessor :id, :name, :cohort_name
 end
 
-# The keyword attr_accessor is a special Ruby feature
-# which allows us to set and get attributes on an object,
-# here's an example:
-#
-# student = Student.new
-# student.name = 'Jo'
-# student.name
-You may choose to test-drive this class, but unless it contains any more logic than the example above, it is probably not needed.
+# (in lib/posts_repository.rb)
+class PostsRepository
+
+end
+
 
 5. Define the Repository Class interface
 
@@ -89,54 +84,115 @@ Your Repository class will need to implement methods for each "read" or "write" 
 Using comments, define the method signatures (arguments and return value) and what they do - write up the SQL queries that will be used by each method.
 
 # EXAMPLE
-# Table name: artists
+# Table name: users
 
 # Repository class
-# (in lib/artists_repository.rb)
+# (in lib/users_repository.rb)
 
-class ArtistsRepository
+class UsersRepository
 
   # Selecting all records
   # No arguments
   def all
     # Executes the SQL query:
-    # SELECT id, name, genre FROM artists;
+    # SELECT id, email_address, user_name FROM users;
 
-    # Returns an array of Artists objects.
+    # Returns an array of User objects.
   end
 
   # Select a single record
   # Given the id in arguemnt (a number)
   def find(id)
    # Executes the SQL query
-   # SELECT id, name, genre, FROM artists WHERE id = ¢1; 
+   # SELECT id, email_address, user_name, FROM users WHERE id = $1; 
   end
 
-  # inserts a new artists record
-  # Takes an Artist object as an argument
-  def create(artists)
+  # inserts a new users record
+  # Takes an Users object as an argument
+  def create(users)
    # Executes SQL query
-   # INSERT INTO artists (name,, genre) VALUES(¢1, ¢2);
+   # INSERT INTO users (email_address, user_name) VALUES(¢1, ¢2);
 
    # Doesn't need to return anything (only creates a record)
+   # return nil
   end
 
-  # Deletes an artist record
+  # Deletes an users record
   # Given its id
   def delete(id)
    # Executes the SQL
-   # DELETE FROM artists WHERE id = ¢1;
+   # DELETE FROM users WHERE id = $1;
 
    # Returns nothing (only deletes the record)
+   # return nil
   end
 
-  # Updates the artists record
-  # Take an Artist objext (with the updated fields)
-  def update(artists)
+  # Updates the users record
+  # Take an Users object (with the updated fields)
+  def update(users)
    # Executes the sql query
-   # UPDATE artists SET name = ¢1, genre = ¢2 WHERE id = ¢3;
+   # UPDATE users SET email_address = $1, user_name = $2 WHERE id = $3;
 
    # Returns nothing (only updates the record)
+   # returns nil
+  end
+
+  # end
+end
+
+
+# EXAMPLE
+# Table name: posts
+
+# Repository class
+# (in lib/posts_repository.rb)
+
+class PostsRepository
+
+  # Selecting all records
+  # No arguments
+  def all
+    # Executes the SQL query:
+    # SELECT id, user_account, title, content, views FROM posts;
+
+    # Returns an array of User objects.
+  end
+
+  # Select a single record
+  # Given the id in arguemnt (a number)
+  def find(id)
+   # Executes the SQL query
+   # SELECT id, user_account, title, content, views FROM posts WHERE id = $1; 
+  end
+
+  # inserts a new users record
+  # Takes an Users object as an argument
+  def create(posts)
+   # Executes SQL query
+   # INSERT INTO posts (user_account, title, content, views) VALUES($1, $2, $3, $4) ;
+
+   # Doesn't need to return anything (only creates a record)
+   # return nil
+  end
+
+  # Deletes an users record
+  # Given its id
+  def delete(id)
+   # Executes the SQL
+   # DELETE FROM posts WHERE id = $1;
+
+   # Returns nothing (only deletes the record)
+   # return nil
+  end
+
+  # Updates the users record
+  # Take an Users object (with the updated fields)
+  def update(posts)
+   # Executes the sql query
+   # UPDATE posts SET user_account = $1, title = $2, content = $3, views = $4 WHERE id = $5;
+   
+   # Returns nothing (only updates the record)
+   # returns nil
   end
 
   # end
@@ -150,43 +206,126 @@ These examples will later be encoded as RSpec tests.
 # EXAMPLES
 
 # 1
-# Get all artists
+# Get all Users
 
-repo = ArtistRepository.new
+repo = UsersRepository.new
 
-artists = repo.all
-artists.length => 2
-artists.first.id => 1
-artists.first.name => 'Pixies'
+user = repo.all
+user.length => 2
+user.first.id => 1
+user.first.email_address => 'cameron@gmail'
+
+# 2 
+# Find a certian user
+
+    repo = UsersRepository.new
+    user = repo.find(1)
+    expect(user.email_address).to eq 'cameron@gmail'
+    expect(user.user_name).to eq 'EpicCam'
+
+    repo = UsersRepository.new
+    user = repo.find(2)
+    expect(user.email_address).to eq 'mergim@yahoo'
+    expect(user.user_name).to eq 'Mergz'
 
 # 3 Create new artists
 
-repo = ArtistRepository.new
+    repo = UsersRepository.new
 
-    new_artists = Artists.new
-    new_artists.name = 'Iron Maiden'
-    new_artists.genre = 'Metal'
+    new_user = Users.new
+    new_user.email_address = 'Jim@bing'
+    new_user.user_name = 'Big Jim'
 
-    repo.create(new_artists)
+    repo.create(new_user)
 
-    artists = repo.all
-    last_artists = artists.last
+    users = repo.all
+    last_user = users.last
 
-    expect(last_artists.name).to eq('Iron Maiden')
-    expect(last_artists.genre).to eq('Metal')
+    expect(last_users.email_address).to eq('Jim@bing')
+    expect(last_users.user_name).to eq('Big Jim')
 
 
 # 4 Delete an artist
 
-repo = ArtistRepository.new
+repo = UsersRepository.new
 
 id_to_delete = 1
 
 repo.delete(id_to_delete)
 
-all_artists = repo.all
-all_artists.length => 1
-all_artists.first.id => 2
+all_users = repo.all
+all_users.length => 3
+all_users.first.id => 2
+
+# 5 Update an artist
+
+repo = ArtistRepository.new
+
+artist = repo.find(1)
+
+artist.name = 'something'
+artist.genre = 'Disco'
+
+repo.update(artist)
+
+updated_artist = repo.find(1)
+
+updated_artist.name => 'something
+updated_artist.genre => 'Disco'
+
+
+
+# 1
+# Get all Posts
+
+repo = PostsRepository.new
+
+user = repo.all
+user.length => 2
+user.first.id => 1
+user.first.email_address => 'cameron@gmail'
+
+# 2 
+# Find a certian user
+
+    repo = UsersRepository.new
+    user = repo.find(1)
+    expect(user.email_address).to eq 'cameron@gmail'
+    expect(user.user_name).to eq 'EpicCam'
+
+    repo = UsersRepository.new
+    user = repo.find(2)
+    expect(user.email_address).to eq 'mergim@yahoo'
+    expect(user.user_name).to eq 'Mergz'
+
+# 3 Create new artists
+
+    repo = UsersRepository.new
+
+    new_user = Users.new
+    new_user.email_address = 'Jim@bing'
+    new_user.user_name = 'Big Jim'
+
+    repo.create(new_user)
+
+    users = repo.all
+    last_user = users.last
+
+    expect(last_users.email_address).to eq('Jim@bing')
+    expect(last_users.user_name).to eq('Big Jim')
+
+
+# 4 Delete an artist
+
+repo = UsersRepository.new
+
+id_to_delete = 1
+
+repo.delete(id_to_delete)
+
+all_users = repo.all
+all_users.length => 3
+all_users.first.id => 2
 
 # 5 Update an artist
 
