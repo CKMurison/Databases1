@@ -105,6 +105,40 @@ class ArtistsRepository
     # Returns an array of Artists objects.
   end
 
+  # Select a single record
+  # Given the id in arguemnt (a number)
+  def find(id)
+   # Executes the SQL query
+   # SELECT id, name, genre, FROM artists WHERE id = ¢1; 
+  end
+
+  # inserts a new artists record
+  # Takes an Artist object as an argument
+  def create(artists)
+   # Executes SQL query
+   # INSERT INTO artists (name,, genre) VALUES(¢1, ¢2);
+
+   # Doesn't need to return anything (only creates a record)
+  end
+
+  # Deletes an artist record
+  # Given its id
+  def delete(id)
+   # Executes the SQL
+   # DELETE FROM artists WHERE id = ¢1;
+
+   # Returns nothing (only deletes the record)
+  end
+
+  # Updates the artists record
+  # Take an Artist objext (with the updated fields)
+  def update(artists)
+   # Executes the sql query
+   # UPDATE artists SET name = ¢1, genre = ¢2 WHERE id = ¢3;
+
+   # Returns nothing (only updates the record)
+  end
+
   # end
 end
 6. Write Test Examples
@@ -124,6 +158,53 @@ artists = repo.all
 artists.length => 2
 artists.first.id => 1
 artists.first.name => 'Pixies'
+
+# 3 Create new artists
+
+repo = ArtistRepository.new
+
+    new_artists = Artists.new
+    new_artists.name = 'Iron Maiden'
+    new_artists.genre = 'Metal'
+
+    repo.create(new_artists)
+
+    artists = repo.all
+    last_artists = artists.last
+
+    expect(last_artists.name).to eq('Iron Maiden')
+    expect(last_artists.genre).to eq('Metal')
+
+
+# 4 Delete an artist
+
+repo = ArtistRepository.new
+
+id_to_delete = 1
+
+repo.delete(id_to_delete)
+
+all_artists = repo.all
+all_artists.length => 1
+all_artists.first.id => 2
+
+# 5 Update an artist
+
+repo = ArtistRepository.new
+
+artist = repo.find(1)
+
+artist.name = 'something'
+artist.genre = 'Disco'
+
+repo.update(artist)
+
+updated_artist = repo.find(1)
+
+updated_artist.name => 'something
+updated_artist.genre => 'Disco'
+
+
 
 
 
