@@ -1,4 +1,4 @@
-TRUNCATE TABLE posts RESTART IDENTITY;
+TRUNCATE TABLE posts RESTART IDENTITY CASCADE;
 
 INSERT INTO posts (user_account, title, content, views) VALUES ('EpicCam', 'Best bean brands', 'Baked beans', '1');
 INSERT INTO posts (user_account, title, content, views) VALUES ('Mergz', 'The best omelet recipes', 'Cheese ftw', '1000');
