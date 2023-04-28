@@ -228,7 +228,7 @@ user.first.email_address => 'cameron@gmail'
     expect(user.email_address).to eq 'mergim@yahoo'
     expect(user.user_name).to eq 'Mergz'
 
-# 3 Create new artists
+# 3 Create new user
 
     repo = UsersRepository.new
 
@@ -245,7 +245,7 @@ user.first.email_address => 'cameron@gmail'
     expect(last_users.user_name).to eq('Big Jim')
 
 
-# 4 Delete an artist
+# 4 Delete an user
 
 repo = UsersRepository.new
 
